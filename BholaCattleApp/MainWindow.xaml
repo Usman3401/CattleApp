@@ -1,0 +1,105 @@
+﻿<Window x:Class="BholaCattleApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BholaCattleApp"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
+        Title="Bhola Cattle" Height="700" Width="840">
+    <!--<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            -->
+    <!-- Top bar -->
+    <!--
+            <RowDefinition Height="*"/>
+            -->
+    <!-- Content -->
+    <!--
+        </Grid.RowDefinitions>
+
+        -->
+    <!-- Top Bar -->
+    <!--
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="LightGray" Height="50">
+            <Ellipse Width="40" Height="40" Margin="10" Fill="Gray" />
+            -->
+    <!-- Logo circle -->
+    <!--
+            <TextBlock Text="{Binding UserName}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="16"/>
+            <Button Content="Setting" HorizontalAlignment="Right" Margin="auto 0 10 0"/>
+        </StackPanel>
+
+        -->
+    <!-- Main Grid for Sidebar and Content -->
+    <!--
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                -->
+    <!-- Sidebar -->
+    <!--
+                <ColumnDefinition Width="*"/>
+                -->
+    <!-- Content -->
+    <!--
+            </Grid.ColumnDefinitions>
+
+            -->
+    <!-- Sidebar -->
+    <!--
+            <StackPanel Grid.Column="0" Background="LightGray">
+                <Button Content="Home" Command="{Binding NavigateToHomeCommand}" Margin="5"/>
+                <Button Content="Animal Records" Command="{Binding NavigateToAnimalRecordsCommand}" Margin="5"/>
+                <Button Content="Status of Animal" Command="{Binding NavigateToStatusCommand}" Margin="5"/>
+                <Button Content="Heifer" Command="{Binding NavigateToHeiferCommand}" Margin="5"/>
+                <Button Content="Pregnant" Command="{Binding NavigateToPregnantCommand}" Margin="5"/>
+                <Button Content="Milking" Command="{Binding NavigateToMilkingCommand}" Margin="5"/>
+                <Button Content="Feeding" Command="{Binding NavigateToFeedingCommand}" Margin="5"/>
+                <Button Content="Medicine" Command="{Binding NavigateToMedicineCommand}" Margin="5"/>
+                <Button Content="Transaction" Command="{Binding NavigateToTransactionsCommand}" Margin="5"/>
+            </StackPanel>
+
+            -->
+    <!-- Content Area -->
+    <!--
+            <ContentControl Grid.Column="1" Content="{Binding CurrentView}" Margin="10"/>
+        </Grid>
+    </Grid>-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Top Bar -->
+        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="LightGray" Height="50">
+            <TextBox Width="150" Margin="10" Text="Search"/>
+            <!-- Search box -->
+            <TextBlock Text="{Binding UserName}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="16"/>
+            <Button Content="Setting" Margin="0 0 10 0" Height="28"/>
+        </StackPanel>
+
+        <!-- Main Grid -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Sidebar -->
+            <StackPanel Grid.Column="0" Background="#d2eaf5">
+                <Button Content="Home" Command="{Binding NavigateToHomeCommand}" Margin="5"/>
+                <!-- Inside StackPanel for sidebar -->
+                <Button Content="Animal Records" Command="{Binding NavigateToAnimalRecordsCommand}" />
+                <!-- Add other buttons later -->
+                <Button Content="Status of Animal" Command="{Binding NavigateToStatusAnimalRecordsCommand}"/>
+
+                <Button Content="Heifer" Command="{Binding NavigateToHeiferRecordsCommand}"/>
+            </StackPanel>
+
+            <!-- Content -->
+            <ContentControl Grid.Column="1" Content="{Binding CurrentView}" Margin="10"/>
+        </Grid>
+    </Grid>
+</Window>
