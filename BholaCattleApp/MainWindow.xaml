@@ -96,6 +96,8 @@
                 <Button Content="Status of Animal" Command="{Binding NavigateToStatusAnimalRecordsCommand}"/>
 
                 <Button Content="Heifer" Command="{Binding NavigateToHeiferRecordsCommand}"/>
+
+                <Button Content="Pregnant" Command="{Binding NavigateTopPregnantAnimalRecordsCommand}"/>
             </StackPanel>
 
             <!-- Content -->

@@ -23,6 +23,7 @@ namespace BholaCattleApp.ViewModels
         public ICommand NavigateToAnimalRecordsCommand { get; }
         public ICommand NavigateToStatusAnimalRecordsCommand { get; }   
         public ICommand NavigateToHeiferRecordsCommand { get; }
+        public ICommand NavigateTopPregnantAnimalRecordsCommand { get; }
 
         public MainViewModel()
         {
@@ -30,6 +31,7 @@ namespace BholaCattleApp.ViewModels
             NavigateToAnimalRecordsCommand = new RelayCommand(NavigateToAnimalRecords);
             NavigateToStatusAnimalRecordsCommand = new RelayCommand(NavigateToStatusAnimalRecords);
             NavigateToHeiferRecordsCommand = new RelayCommand(NavigateToHeiferRecords);
+            NavigateTopPregnantAnimalRecordsCommand = new RelayCommand(NavigateToPregnantRecords);
             NavigateToHome(); 
         }
 
@@ -75,6 +77,12 @@ namespace BholaCattleApp.ViewModels
             var heiferView = new HeiferRecordsView();
             heiferView.DataContext = new HeiferRecordsViewModel(this);
             CurrentView = heiferView;
+        }
+        public void NavigateToPregnantRecords()
+        {
+            var pregnantView = new PregnantAnimalRecordView();
+            pregnantView.DataContext = new PregnantAnimalRecordViewModel(this); 
+            CurrentView = pregnantView;
         }
     }
 }
