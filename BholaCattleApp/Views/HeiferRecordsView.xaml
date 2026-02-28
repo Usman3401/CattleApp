@@ -16,7 +16,7 @@
             </StackPanel>
             <DataGrid ItemsSource="{Binding Heifers}" SelectedItem="{Binding SelectedHeifer}" AutoGenerateColumns="False" Height="300">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding StatusHistoryID}" Width="50"/>
+                    <DataGridTextColumn Header="ID" Binding="{Binding HeiferHistoryID}" Width="50"/>
                     <DataGridTextColumn Header="Animal ID" Binding="{Binding AnimalID}" Width="*"/>
                     <DataGridTextColumn Header="Status ID" Binding="{Binding StatusID}" Width="*"/>
                     <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=dd/MM/yyyy}" Width="*"/>

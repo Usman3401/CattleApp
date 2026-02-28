@@ -10,9 +10,9 @@
         <StackPanel>
             <TextBlock Text="Pregnant Animals" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,20"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-                <Button Content="Add" Command="{Binding AddHeiferCommand}" Width="80" Margin="5"/>
-                <Button Content="Edit" Command="{Binding EditHeiferCommand}" Width="80" Margin="5"/>
-                <Button Content="Delete" Command="{Binding DeleteHeiferCommand}" Width="80" Margin="5"/>
+                <Button Content="Add" Command="{Binding AddPregnantCommand}" Width="80" Margin="5"/>
+                <Button Content="Edit" Command="{Binding EditPregnantCommand}" Width="80" Margin="5"/>
+                <Button Content="Delete" Command="{Binding DeletePregnantCommand}" Width="80" Margin="5"/>
             </StackPanel>
             <DataGrid ItemsSource="{Binding Pregnants}" SelectedItem="{Binding SelectedPregnant}" AutoGenerateColumns="False" Height="300">
                 <DataGrid.Columns>
