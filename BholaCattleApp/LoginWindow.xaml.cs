@@ -1,5 +1,6 @@
 ﻿using BholaCattleApp.Services;
 using BholaCattleApp.ViewModels;
+using Oracle.ManagedDataAccess.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,16 +17,40 @@ using System.Windows.Shapes;
 
 namespace BholaCattleApp
 {
-    /// <summary>
-    /// Interaction logic for LoginWindow.xaml
-    /// </summary>
     public partial class LoginWindow : Window
     {
         public LoginWindow()
         {
             InitializeComponent();
-           
-            DataContext = new LoginViewModel(this, PasswordBox);
+            fd_Username.Focus();
+            DataContext = new LoginViewModel(this, PasswordBox, fd_Username);
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var focusedElement = Keyboard.FocusedElement as UIElement;
+                if (focusedElement != null)
+                {
+                    focusedElement.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+                }
+                e.Handled = true;
+            }
+        }
+        protected override void OnClosed(EventArgs e)
+        {
+            if (Connection._connection != null && Connection._connection.State != System.Data.ConnectionState.Closed)
+            {
+                try
+                {
+                    Connection._connection.Close();
+                    Connection._connection.Dispose();
+                }
+                catch { }
+            }
+
+            base.OnClosed(e);
         }
     }
 }

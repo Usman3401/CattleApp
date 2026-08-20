@@ -3,62 +3,34 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BholaCattleApp"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="Log in" Height="500" Width="800" ResizeMode="NoResize" 
-        Background="{StaticResource BackgroundBrush}">
-    <Grid>
-        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="200">
-            <TextBlock Text="Log in" FontSize="20" HorizontalAlignment="Center" Margin="0,0,0,20"/>
-            <TextBlock Text="Username :" />
-            <TextBox Text="{Binding Username}" Margin="0,0,0,10"/>
-            <TextBlock Text="Password :" />
-            <PasswordBox x:Name="PasswordBox" Margin="0,0,0,10"/>
-            
-            <Button x:Name="btn_login" Command="{Binding LoginCommand}" Content="Log In" BorderThickness="0" Foreground="White" FontWeight="Medium" FontFamily="Myriad Pro">
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border Width="100" Height="24" CornerRadius="5" Background="{TemplateBinding Background}">
-                            <ContentPresenter VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                        </Border>
-                    </ControlTemplate>
-                </Button.Template>
-                <Button.Style>
-                    <Style TargetType="Button">
-                        <Setter Property="Background">
-                            <Setter.Value>
-                                <LinearGradientBrush StartPoint="0.5 1" EndPoint="0.5 0">
-                                    <GradientStop Color="#58c0ce" Offset="0.712"/>
-                                    <GradientStop Color="#5d9abb" />
-                                </LinearGradientBrush>
-                            </Setter.Value>
-                        </Setter>
-                        <Style.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0.5 1" EndPoint="0.5 0">
-                                            <GradientStop Color="#50b8d6" Offset="0.712"/>
-                                            <GradientStop Color="#4c9dbb" />
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <LinearGradientBrush StartPoint="0.5 1" EndPoint="0.5 0">
-                                            <GradientStop Color="#45a4b0" Offset="0.712"/>
-                                            <GradientStop Color="#4586a6" />
-                                        </LinearGradientBrush>
-                                    </Setter.Value>
-                                </Setter>
-                            </Trigger>
-                        </Style.Triggers>
-                    </Style>
-                </Button.Style>
-            </Button>
-            
+        xmlns:local="clr-namespace:BholaCattleApp.Views"
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" 
+        Title="Cattle Managemenat System" Height="600" Width="950" ResizeMode="NoResize"
+        Background="{StaticResource BackgroundBrush}" KeyDown="Window_KeyDown">
+    <Grid >
+        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+            <Border Background="#f8f8f8" CornerRadius="12" Padding="20" Effect="{StaticResource DropShadowEffect}">
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" >
+                    <TextBlock Text="Log in" FontSize="45" HorizontalAlignment="Left" FontWeight="Bold" Margin="0 0 0 20"/>
+
+                    <TextBlock Text="Username" />
+                    <TextBox x:Name="fd_Username" Text="{Binding Username, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="0 0 0 10" Width="190" Height="20" BorderThickness="0 0 0 0.9" BorderBrush="Black" FontSize="13" SelectionBrush="#FF4D545A" Background="Transparent"/>
+                    <TextBlock Text="{Binding UsernameError}" Foreground="Red" FontSize="12" Margin="5 0 0 0"/>
+
+                    <TextBlock Text="Password" />
+                    <PasswordBox x:Name="PasswordBox" Margin="0 0 0 10" Width="190" Height="20" BorderThickness="0 0 0 0.9" BorderBrush="Black" Background="Transparent" FontSize="13" SelectionBrush="#FF55656A"/>
+                    <TextBlock Text="{Binding PasswordError}" Foreground="Red" FontSize="12" Margin="5 0 0 0"/>
+
+                    <CheckBox x:Name="cb_pass" Margin="5 5 0 0" HorizontalAlignment="Left"  Height="15" Width="90" Background="Transparent" >
+                        <TextBlock Text="Show Password" FontSize="10" Width="85" Height="13"  FontFamily="Myriad Pro " Margin="0 3 0 0"/>
+                    </CheckBox>
+                    <Button x:Name="btn_login" Command="{Binding LoginCommand}" Style="{StaticResource btnlogin}" Content="Log In" BorderThickness="0"  FontWeight="Medium" FontFamily="Myriad Pro" Margin="0 25 0 0"/>
+                    <TextBlock x:Name="tb_msg" Text="{Binding LoginMessage, Mode=OneWay}" FontSize="13" HorizontalAlignment="Center" Margin="0 15 0 0"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
+        <Grid Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibilityConverter}}">
+            <local:LoadingSpinner HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Grid>
     </Grid>
 </Window>

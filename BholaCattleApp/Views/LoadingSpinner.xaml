@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="BholaCattleApp.Views.LoadingSpinner"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Grid Width="120" Height="120">
+        <Border Background="White" CornerRadius="20" Effect="{StaticResource DropShadowEffect}">
+            <Canvas Width="70" Height="70"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+
+                <Ellipse Width="70" Height="70"
+                         Stroke="#E5E5E5"
+                         StrokeThickness="6"
+                         Canvas.Left="0" Canvas.Top="0"/>
+
+                <Path x:Name="SpinnerArc"
+                      StrokeThickness="6"
+                      StrokeStartLineCap="Flat"
+                      StrokeEndLineCap="Round">
+                    <Path.RenderTransform>
+                        <RotateTransform x:Name="SpinnerRotate"
+                                         CenterX="35" CenterY="35"
+                                         Angle="0"/>
+                    </Path.RenderTransform>
+                </Path>
+
+            </Canvas>
+        </Border>
+    </Grid>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Loaded">
+            <BeginStoryboard>
+                <Storyboard>
+                    <DoubleAnimation Storyboard.TargetName="SpinnerRotate"
+                                     Storyboard.TargetProperty="Angle"
+                                     From="0" To="360"
+                                     Duration="0:0:1.2"
+                                     RepeatBehavior="Forever"/>
+                </Storyboard>
+            </BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+</UserControl>
