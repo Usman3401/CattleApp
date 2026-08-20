@@ -10,7 +10,8 @@ namespace BholaCattleApp.ViewModels
         private object _currentView;
         public object CurrentView { get => _currentView; set { _currentView = value; OnPropertyChanged(); } }
 
-        public string UserName { get; set; } = "User Name";
+        public string UserName { get ; set; }
+        public string FullName { get; set; }
 
         public ICommand NavigateToHomeCommand { get; }
         public ICommand NavigateToAnimalRecordsCommand { get; }
@@ -24,8 +25,10 @@ namespace BholaCattleApp.ViewModels
         public ICommand NavigateToTransactionRecordsCommad { get; }
 
 
-        public MainViewModel()
+        public MainViewModel(User User)
         {
+            UserName = User.username;
+            FullName = $"{User.firstname} {User.lastname}";
             NavigateToHomeCommand = new RelayCommand(NavigateToHome);
             NavigateToAnimalRecordsCommand = new RelayCommand(NavigateToAnimalRecords);
             NavigateToStatusAnimalRecordsCommand = new RelayCommand(NavigateToStatusAnimalRecords);
@@ -45,11 +48,12 @@ namespace BholaCattleApp.ViewModels
             homeView.DataContext = new HomeViewModel();
             CurrentView = homeView;
         }
+ 
         #region Animal 
         public void NavigateToAddEditAnimal(AnimalRecordsViewModel parentVM, Animal editingAnimal)
         {
             var addEditView = new AddEditAnimalView();
-            addEditView.DataContext = new AddEditAnimalViewModel(this, parentVM, editingAnimal);
+            addEditView.DataContext = new AddEditAnimalViewModel(this, parentVM, UserName, editingAnimal);
             CurrentView = addEditView;
         }
         public void NavigateToAnimalRecords()

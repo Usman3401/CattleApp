@@ -1,5 +1,5 @@
 ﻿using BholaCattleApp.ViewModels;
-
+using BholaCattleApp.Models;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,15 +13,12 @@ using System.Windows.Shapes;
 
 namespace BholaCattleApp
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        public MainWindow()
+        public MainWindow(User user = null)
         {
             InitializeComponent();
-            DataContext = new MainViewModel();
+            DataContext = new MainViewModel(user);
         }
     }
 }

@@ -3,54 +3,41 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:local="clr-namespace:BholaCattleApp"
-        mc:Ignorable="d" WindowStartupLocation="CenterScreen"
-        Title="Bhola Cattle" Height="700" Width="840">
-    <!--<Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-        </Grid.RowDefinitions>
-
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="LightGray" Height="50">
-            <Ellipse Width="40" Height="40" Margin="10" Fill="Gray" />
-           
-            <TextBlock Text="{Binding UserName}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="16"/>
-            <Button Content="Setting" HorizontalAlignment="Right" Margin="auto 0 10 0"/>
-        </StackPanel>
-
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="150"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <StackPanel Grid.Column="0" Background="LightGray">
-                <Button Content="Home" Command="{Binding NavigateToHomeCommand}" Margin="5"/>
-                <Button Content="Animal Records" Command="{Binding NavigateToAnimalRecordsCommand}" Margin="5"/>
-                <Button Content="Status of Animal" Command="{Binding NavigateToStatusCommand}" Margin="5"/>
-                <Button Content="Heifer" Command="{Binding NavigateToHeiferCommand}" Margin="5"/>
-                <Button Content="Pregnant" Command="{Binding NavigateToPregnantCommand}" Margin="5"/>
-                <Button Content="Milking" Command="{Binding NavigateToMilkingCommand}" Margin="5"/>
-                <Button Content="Feeding" Command="{Binding NavigateToFeedingCommand}" Margin="5"/>
-                <Button Content="Medicine" Command="{Binding NavigateToMedicineCommand}" Margin="5"/>
-                <Button Content="Transaction" Command="{Binding NavigateToTransactionsCommand}" Margin="5"/>
-            </StackPanel>
-
-            <ContentControl Grid.Column="1" Content="{Binding CurrentView}" Margin="10"/>
-        </Grid>
-    </Grid>-->
+        mc:Ignorable="d" WindowStartupLocation="CenterScreen" Background="{StaticResource BackgroundBrush}" 
+        Title="Cattle Managemenat System" Height="700" Width="950">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Background="LightGray" Height="50">
-            <TextBox Width="150" Margin="10" Text="Search"/>
-            <TextBlock Text="{Binding UserName}" VerticalAlignment="Center" Margin="10,0,0,0" FontSize="16"/>
-            <Button Content="Setting" Margin="0 0 10 0" Height="28"/>
-        </StackPanel>
+        <Grid Grid.Row="0"  HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="White" CornerRadius="10" BorderThickness="1.5" Margin="10" BorderBrush="Black" Height="25" VerticalAlignment="Center" Effect="{StaticResource DropShadowEffect}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBox x:Name="fd_search" Width="180"  Height="20"  Margin="5 0 20 0" VerticalContentAlignment="Center"  BorderThickness="0" Tag="Search..."/>
+                    <materialDesign:PackIcon Kind="Magnify" Grid.Column="1" Width="22" Height="22" VerticalAlignment="Center"  Margin="0 0 4 0" Foreground="Black"/>
+                </Grid>
+            </Border>
+            
+            <TextBlock Grid.Column="1" Text="{Binding FullName}" Effect="{StaticResource DropShadowEffect}" VerticalAlignment="Center" Margin="20 2 300 0" FontWeight="DemiBold" FontSize="16" FontFamily="Myriad Pro"/>
+
+            <Button x:Name="btn_setting" Grid.Column="3" Cursor="Hand" Style="{StaticResource setbutton}" Margin="-46 2 0 2" />
+            <TextBlock Grid.Column="3" Text="Settings" Effect="{StaticResource DropShadowEffect}" Foreground="Black" Margin="-15,17,100,15" HorizontalAlignment="Left" Width="auto" FontWeight="Medium" FontSize="14" FontFamily="Myriad Pro" Cursor="Hand"/>
+
+            <Button x:Name="btn_logout" Grid.Column="3" Cursor="Hand" Style="{StaticResource logoutbutton}" Margin="53 2 15 2" />
+            <TextBlock Grid.Column="3" Text="Log Out" Effect="{StaticResource DropShadowEffect}" Foreground="Black" Margin="85,17,20,15" HorizontalAlignment="Left" Width="auto" FontWeight="Medium" FontSize="14" FontFamily="Myriad Pro" Cursor="Hand"/>
+        </Grid>
 
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -58,29 +45,31 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0" Background="#d2eaf5">
-                <Button Content="Home" Command="{Binding NavigateToHomeCommand}" Margin="5"/>
-                
-                <Button Content="Animal Records" Command="{Binding NavigateToAnimalRecordsCommand}" />
-                
-                <Button Content="Status of Animal" Command="{Binding NavigateToStatusAnimalRecordsCommand}"/>
+            <StackPanel Grid.Column="0">
+                <Button Content="Home" Style="{StaticResource SidebarButtonStyle}" Command="{Binding NavigateToHomeCommand}" Margin="8 10 0 0"/>
 
-                <Button Content="Heifer" Command="{Binding NavigateToHeiferRecordsCommand}"/>
+                <Button Content="Animal Records" Style="{StaticResource SidebarButtonStyle}" Command="{Binding NavigateToAnimalRecordsCommand}" Margin="8 10 0 0" />
 
-                <Button Content="Pregnant" Command="{Binding NavigateToPregnantAnimalRecordsCommand}"/>
+                <Button Content="Status of Animal" Style="{StaticResource SidebarButtonStyle}" Command="{Binding NavigateToStatusAnimalRecordsCommand}" Margin="8 10 0 0"/>
 
-                <Button Content="Milking" Command="{Binding NavigateToMilkingAnimalRecordsCommand}"/>
+                <Button Content="Heifer" Style="{StaticResource SidebarButtonStyle}" Command="{Binding NavigateToHeiferRecordsCommand}" Margin="8 10 0 0"/>
 
-                <Button Content="Feed" Command="{Binding NavigateToFeedingRecordsCommad}"/>
+                <Button Content="Pregnant" Style="{StaticResource SidebarButtonStyle}" Command="{Binding NavigateToPregnantAnimalRecordsCommand}" Margin="8 10 0 0"/>
 
-                <Button Content="Medicine" Command="{Binding NavigateToMedicineRecordsCommad}"/>
+                <Button Content="Milking" Style="{StaticResource SidebarButtonStyle}" Command="{Binding NavigateToMilkingAnimalRecordsCommand}" Margin="8 10 0 0"/>
 
-                <Button Content="Vaccine" Command="{Binding NavigateToVaccineRecordsCommad}"/>
+                <Button Content="Feed" Style="{StaticResource SidebarButtonStyle}" Command="{Binding NavigateToFeedingRecordsCommad}" Margin="8 10 0 0"/>
 
-                <Button Content="Transaction" Command="{Binding NavigateToTransactionRecordsCommad}"/>
+                <Button Content="Medicine" Style="{StaticResource SidebarButtonStyle}" Command="{Binding NavigateToMedicineRecordsCommad}" Margin="8 10 0 0"/>
+
+                <Button Content="Vaccine" Style="{StaticResource SidebarButtonStyle}" Command="{Binding NavigateToVaccineRecordsCommad}" Margin="8 10 0 0"/>
+
+                <Button Content="Transaction" Style="{StaticResource SidebarButtonStyle}" Command="{Binding NavigateToTransactionRecordsCommad}" Margin="8 10 0 0"/>
             </StackPanel>
 
-            <ContentControl Grid.Column="1" Content="{Binding CurrentView}" Margin="10"/>
+            <Border Grid.Column="1" Background="#f8f8f8" Margin="10" BorderBrush="#E5E5E5" BorderThickness="1" CornerRadius="10" Effect="{StaticResource DropShadowEffect}">
+                <ContentControl Content="{Binding CurrentView}" />
+            </Border>
         </Grid>
     </Grid>
 </Window>
