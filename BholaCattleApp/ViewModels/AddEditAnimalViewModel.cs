@@ -1,75 +1,115 @@
 ﻿using BholaCattleApp.Helpers;
 using BholaCattleApp.Models;
+using BholaCattleApp.Services;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace BholaCattleApp.ViewModels
 {
-    public class AddEditAnimalViewModel : BaseViewModel
+    public class AddEditAnimalViewModel : BaseViewModel 
     {
-        public string Title { get; set; } = "Add Animal"; // Default; set to "Edit Animal" if editing
-        public string TagNumber { get; set; }
+        public string Title { get; set; } = "Add Animal"; 
+        public int AnimalID { get; set; }   
+        public int TagNumber { get; set; }
         public string Name { get; set; }
-        public string Species { get; set; }
+        public int SpeciesID { get; set; }
         public string Breed { get; set; }
-        public string Gender { get; set; }
+        public int GenderID { get; set; }
         public DateTime DateOfBirth { get; set; } = DateTime.Now;
+        public string UserName { get; set; }
 
         public ICommand SaveCommand { get; }
         public ICommand CancelCommand { get; }
 
-        private readonly AnimalRecordsViewModel _parentVM;
-        private readonly Animal _editingAnimal; // Null for add
-        private readonly MainViewModel _mainVM; // For navigation back
+        private string _Message;
+        public string Message
+        {
+            get => _Message;
+            set { _Message = value; OnPropertyChanged(); }
+        }
 
-        public AddEditAnimalViewModel(MainViewModel mainVM, AnimalRecordsViewModel parentVM, Animal editingAnimal = null)
+        private DataTable _genderOptions;
+        public DataTable GenderOptions
+        {
+            get => _genderOptions;
+            set { _genderOptions = value; OnPropertyChanged(); }
+        }
+
+        private DataTable _speciesOptions;
+        public DataTable SpeciesOptions
+        {
+            get => _speciesOptions;
+            set { _speciesOptions = value; OnPropertyChanged(); }
+        }
+
+        private readonly AnimalRecordsViewModel _parentVM;
+        private readonly Animal _editingAnimal; 
+        private readonly MainViewModel _mainVM; 
+        
+
+        public AddEditAnimalViewModel(MainViewModel mainVM, AnimalRecordsViewModel parentVM, string Username, Animal editingAnimal = null)
         {
             _mainVM = mainVM;
             _parentVM = parentVM;
             _editingAnimal = editingAnimal;
+            UserName = Username;
+
+            GenderOptions = MSP.GetGenderOptions();
+            SpeciesOptions = MSP.GetSpeciesOptions();
 
             if (_editingAnimal != null)
             {
                 Title = "Edit Animal";
+                AnimalID = _editingAnimal.AnimalID;
                 TagNumber = _editingAnimal.TagNumber;
                 Name = _editingAnimal.Name;
-                Species = _editingAnimal.Species;
+                SpeciesID = _editingAnimal.SpeciesID;
                 Breed = _editingAnimal.Breed;
-                Gender = _editingAnimal.Gender;
+                GenderID = _editingAnimal.GenderID;
                 DateOfBirth = _editingAnimal.DateOfBirth;
             }
 
             SaveCommand = new RelayCommand(Save);
             CancelCommand = new RelayCommand(Cancel);
         }
-
-        private void Save()
+        private async void Save()
         {
+            if (SpeciesID <= 0)
+            {
+                Message = "Please select a species.";
+                return;
+            }
+
+            if (GenderID <= 0)
+            {
+                Message = "Please select a gender.";
+                return;
+            }
             var animal = _editingAnimal ?? new Animal();
+            animal.AnimalID = AnimalID;
             animal.TagNumber = TagNumber;
             animal.Name = Name;
-            animal.Species = Species;
+            animal.SpeciesID = SpeciesID;
             animal.Breed = Breed;
-            animal.Gender = Gender;
+            animal.GenderID = GenderID;
             animal.DateOfBirth = DateOfBirth;
 
-            if (_editingAnimal == null)
-            {
-                _parentVM.Animals.Add(animal); // Add to collection
-            }
-            // Else, update existing (collection observes changes)
-
-            _parentVM.RefreshList();
-            _mainVM.NavigateToAnimalRecords(); // Navigate back to list
+            MSP.AddEditAnimal(animal, UserName , out string message);
+            Message = message;  
+            await Task.Delay(3000);
+            _mainVM.NavigateToAnimalRecords(); 
         }
 
         private void Cancel()
         {
-            _mainVM.NavigateToAnimalRecords(); // Navigate back without saving
+            _mainVM.NavigateToAnimalRecords(); 
         }
     }
 }

@@ -4,28 +4,122 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BholaCattleApp.Views"
+             xmlns:helpers="clr-namespace:BholaCattleApp.Helpers"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="20">
-        <StackPanel>
-            <TextBlock Text="{Binding Title}" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,20"/>
-            <!-- Binds to "Add Animal" or "Edit Animal" -->
-            <TextBlock Text="Tag No:" Margin="0,0,0,5"/>
-            <TextBox Text="{Binding TagNumber}" Margin="0,0,0,10"/>
-            <TextBlock Text="Name:" Margin="0,0,0,5"/>
-            <TextBox Text="{Binding Name}" Margin="0,0,0,10"/>
-            <TextBlock Text="Species:" Margin="0,0,0,5"/>
-            <TextBox Text="{Binding Species}" Margin="0,0,0,10"/>
-            <TextBlock Text="Breed:" Margin="0,0,0,5"/>
-            <TextBox Text="{Binding Breed}" Margin="0,0,0,10"/>
-            <TextBlock Text="Gender:" Margin="0,0,0,5"/>
-            <TextBox Text="{Binding Gender}" Margin="0,0,0,10"/>
-            <TextBlock Text="Date of Birth:" Margin="0,0,0,5"/>
-            <DatePicker SelectedDate="{Binding DateOfBirth}" Margin="0,0,0,20"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                <Button Content="Save" Command="{Binding SaveCommand}" Width="80" Margin="0,0,10,0"/>
-                <Button Content="Cancel" Command="{Binding CancelCommand}" Width="80"/>
-            </StackPanel>
-        </StackPanel>
+             d:DesignHeight="500" d:DesignWidth="800">
+
+    <!-- Outer surface fills the whole host area and centers the card,
+         both horizontally AND vertically, at any window size -->
+    <Grid>
+
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      HorizontalContentAlignment="Center"
+                      VerticalContentAlignment="Center"
+                      Margin="0 12 0 12">
+
+            <Border Background="White"
+                    CornerRadius="12"
+                    Padding="36,32"
+                    Width="640"
+                    Margin="20"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+                <Border.Effect>
+                    <DropShadowEffect BlurRadius="18" ShadowDepth="2" Opacity="0.15"/>
+                </Border.Effect>
+
+                <StackPanel>
+
+                    <!-- Header -->
+                    <TextBlock Text="{Binding Title}" FontSize="24" FontWeight="Bold"
+                               HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="tb_msg" Text="{Binding Message, Mode=OneWay}"
+                               FontSize="13" Foreground="Gray"
+                               HorizontalAlignment="Center" Margin="0,6,0,26"
+                               TextWrapping="Wrap"/>
+
+                    <!-- Form fields -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="0" Grid.Column="0" Style="{StaticResource FieldPanel}">
+                            <TextBlock Text="Tag No:" Style="{StaticResource FieldLabel}"/>
+                            <TextBox Text="{Binding TagNumber, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                                     Style="{StaticResource TextBoxInput}"
+                                     
+                                     MaxLength="15"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="0" Grid.Column="1" Style="{StaticResource FieldPanel}" Margin="0,0,0,16">
+                            <TextBlock Text="Name:" Style="{StaticResource FieldLabel}"/>
+                            <TextBox Text="{Binding Name, ValidatesOnDataErrors=True, NotifyOnValidationError=True}"
+                                     Style="{StaticResource TextBoxInput}"
+                                     
+                                     MaxLength="50"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="0" Style="{StaticResource FieldPanel}">
+                            <TextBlock Text="Species:" Style="{StaticResource FieldLabel}"/>
+                            <ComboBox ItemsSource="{Binding SpeciesOptions}"
+                                      SelectedValuePath="SPECIESID"
+                                      SelectedValue="{Binding SpeciesID, Converter={StaticResource DecimalToIntConverter}}"
+                                      Style="{StaticResource ComboBoxInput}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding SPECIESNAME}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="1" Grid.Column="1" Style="{StaticResource FieldPanel}" Margin="0,0,0,16">
+                            <TextBlock Text="Breed:" Style="{StaticResource FieldLabel}"/>
+                            <TextBox Text="{Binding Breed}" Style="{StaticResource TextBoxInput}"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="0" Style="{StaticResource FieldPanel}">
+                            <TextBlock Text="Gender:" Style="{StaticResource FieldLabel}"/>
+                            <ComboBox ItemsSource="{Binding GenderOptions}"
+                                      SelectedValuePath="GENDERID"
+                                      SelectedValue="{Binding GenderID, Converter={StaticResource DecimalToIntConverter}}"
+                                      Style="{StaticResource ComboBoxInput}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding GENDERNAME}"/>
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Grid.Row="2" Grid.Column="1" Style="{StaticResource FieldPanel}" Margin="0,0,0,16">
+                            <TextBlock Text="Date of Birth:" Style="{StaticResource FieldLabel}"/>
+                            <DatePicker SelectedDate="{Binding DateOfBirth}"
+                                        Style="{StaticResource DatePickerInput}"/>
+                        </StackPanel>
+
+                    </Grid>
+
+                    <!-- Buttons -->
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,12,0,0">
+                        <Button Content="Save" Command="{Binding SaveCommand}"
+                                Style="{StaticResource button}"
+                                MinWidth="90" Margin="0,0,10,0"/>
+                        <Button Content="Cancel" Command="{Binding CancelCommand}"
+                                Style="{StaticResource button}"
+                                MinWidth="90"/>
+                    </StackPanel>
+
+                </StackPanel>
+            </Border>
+        </ScrollViewer>
     </Grid>
 </UserControl>

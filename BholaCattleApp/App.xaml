@@ -6,6 +6,7 @@
              xmlns:local="clr-namespace:BholaCattleApp.Helpers">
     <Application.Resources>
         <local:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+        <local:DecimalToIntConverter x:Key="DecimalToIntConverter" />
         <DropShadowEffect x:Key="DropShadowEffect" Color="#40000000" BlurRadius="15" ShadowDepth="4" Opacity="0.3"/>
         <SolidColorBrush x:Key="BackgroundBrush" Color="#cbcbcb" />
         <SolidColorBrush x:Key="ButtonBackground" Color="LightGray" />
@@ -17,6 +18,219 @@
 
         <Style TargetType="TextBlock">
             <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <!-- ===================== Field label / wrapper ===================== -->
+        <Style x:Key="FieldLabel" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,0,0,4"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="#444"/>
+        </Style>
+
+        <Style x:Key="FieldPanel" TargetType="StackPanel">
+            <Setter Property="Margin" Value="0,0,20,16"/>
+        </Style>
+
+        <!-- ===================== Rounded TextBox ===================== -->
+        <Style x:Key="TextBoxInput" TargetType="TextBox">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <ScrollViewer x:Name="PART_ContentHost"
+                                          Margin="{TemplateBinding Padding}"
+                                          VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsFocused" Value="True">
+                                <Setter Property="BorderBrush" Value="#4A90D9"/>
+                            </Trigger>
+                            <Trigger Property="Validation.HasError" Value="True">
+                                <Setter Property="BorderBrush" Value="#D9534F"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===================== Rounded ComboBox ===================== -->
+        <Style x:Key="ComboBoxToggleTemplate" TargetType="ToggleButton">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ToggleButton">
+                        <Border Background="Transparent">
+                            <Path Data="M 0 0 L 5 5 L 10 0 Z" Fill="#777"
+                                  HorizontalAlignment="Right" VerticalAlignment="Center"
+                                  Margin="0,0,12,0"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="ComboBoxInput" TargetType="ComboBox">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Padding" Value="10,0"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ComboBox">
+                        <Grid>
+                            <Border x:Name="Border"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="{TemplateBinding BorderThickness}"
+                                    CornerRadius="8"/>
+                            <ToggleButton Style="{StaticResource ComboBoxToggleTemplate}"
+                                          IsChecked="{Binding IsDropDownOpen, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                          ClickMode="Press"/>
+                            <ContentPresenter x:Name="ContentSite"
+                                              IsHitTestVisible="False"
+                                              Content="{Binding SelectedItem, RelativeSource={RelativeSource TemplatedParent}}"
+                                              ContentTemplate="{Binding ItemTemplate, RelativeSource={RelativeSource TemplatedParent}}"
+                                              Margin="{TemplateBinding Padding}"
+                                              VerticalAlignment="Center"
+                                              HorizontalAlignment="Left"/>
+                            <TextBox x:Name="PART_EditableTextBox"
+                                     Visibility="Hidden"
+                                     Background="Transparent"
+                                     BorderThickness="0"
+                                     Margin="{TemplateBinding Padding}"
+                                     VerticalAlignment="Center"
+                                     IsReadOnly="{TemplateBinding IsReadOnly}"
+                                     Focusable="True"/>
+                            <Popup x:Name="Popup"
+                                   Placement="Bottom"
+                                   IsOpen="{TemplateBinding IsDropDownOpen}"
+                                   AllowsTransparency="True"
+                                   Focusable="False"
+                                   PopupAnimation="Slide">
+                                <Border Background="White"
+                                        BorderBrush="#CCCCCC"
+                                        BorderThickness="1"
+                                        CornerRadius="8"
+                                        MinWidth="{Binding ActualWidth, RelativeSource={RelativeSource TemplatedParent}}"
+                                        Margin="0,4,0,0"
+                                        MaxHeight="{TemplateBinding MaxDropDownHeight}">
+                                    <Border.Effect>
+                                        <DropShadowEffect BlurRadius="12" ShadowDepth="2" Opacity="0.2"/>
+                                    </Border.Effect>
+                                    <ScrollViewer SnapsToDevicePixels="True">
+                                        <ItemsPresenter KeyboardNavigation.DirectionalNavigation="Contained"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </Popup>
+                        </Grid>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsDropDownOpen" Value="True">
+                                <Setter TargetName="Border" Property="BorderBrush" Value="#4A90D9"/>
+                            </Trigger>
+                            <Trigger Property="IsEditable" Value="True">
+                                <Setter TargetName="ContentSite" Property="Visibility" Value="Collapsed"/>
+                                <Setter TargetName="PART_EditableTextBox" Property="Visibility" Value="Visible"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- Plain button chrome used for the calendar icon button inside DatePicker -->
+        <Style x:Key="CalendarButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border x:Name="Bg" Background="Transparent" CornerRadius="0,8,8,0">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="Bg" Property="Background" Value="#F0F0F0"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- ===================== Rounded DatePicker ===================== -->
+        <Style x:Key="DatePickerTextBoxRounded" TargetType="DatePickerTextBox">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DatePickerTextBox">
+                        <Border Background="White" CornerRadius="8">
+                            <Grid>
+                                <TextBox x:Name="PART_TextBox"
+                                         Background="Transparent"
+                                         BorderThickness="0"
+                                         Padding="10,0"
+                                         VerticalContentAlignment="Center"
+                                         Text="{Binding Path=SelectedDate, RelativeSource={RelativeSource AncestorType=DatePicker}, StringFormat=dd-MMM-yyyy}"/>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DatePickerInput" TargetType="DatePicker">
+            <Setter Property="Height" Value="36"/>
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#CCCCCC"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CalendarStyle" Value="{x:Null}"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="DatePicker">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="8">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="30"/>
+                                </Grid.ColumnDefinitions>
+                                <DatePickerTextBox x:Name="PART_TextBox"
+                                                    Grid.Column="0"
+                                                    Style="{StaticResource DatePickerTextBoxRounded}"
+                                                    VerticalAlignment="Center"/>
+                                <Button x:Name="PART_Button"
+                                        Grid.Column="1"
+                                        Style="{StaticResource CalendarButtonStyle}"
+                                        Cursor="Hand"
+                                        Focusable="False">
+                                    <TextBlock Text="&#xE787;"
+                                               FontFamily="Segoe MDL2 Assets"
+                                               FontSize="15"
+                                               Foreground="#666"/>
+                                </Button>
+                                <Popup x:Name="PART_Popup"
+                                       Placement="Bottom"
+                                       StaysOpen="False"
+                                       AllowsTransparency="True">
+                                    <Calendar x:Name="PART_Calendar"/>
+                                </Popup>
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style x:Key="button" TargetType="Button">
