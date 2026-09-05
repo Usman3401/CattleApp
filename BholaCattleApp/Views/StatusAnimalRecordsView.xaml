@@ -4,26 +4,45 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BholaCattleApp.Views"
-             mc:Ignorable="d" Background="White"
+             mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Margin="20">
-        <StackPanel>
-            <TextBlock Text="Status of Animal" FontSize="24" HorizontalAlignment="Center" Margin="0,0,0,20"/>
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,0,10">
-                <Button Content="Add" Command="{Binding AddStatusAnimalCommand}" Width="80" Margin="5"/>
-                <Button Content="Edit" Command="{Binding EditStatusAnimalCommand}" Width="80" Margin="5"/>
-                <Button Content="Delete" Command="{Binding DeleteStatusAnimalCommand}" Width="80" Margin="5"/>
-            </StackPanel>
-            <DataGrid ItemsSource="{Binding StatusAnimals}" SelectedItem="{Binding SelectedStatusAnimal}" AutoGenerateColumns="False" Height="300">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="ID" Binding="{Binding StatusHistoryID}" Width="50"/>
-                    <DataGridTextColumn Header="Animal ID" Binding="{Binding AnimalID}" Width="*"/>
-                    <DataGridTextColumn Header="Status ID" Binding="{Binding StatusID}" Width="*"/>
-                    <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=dd/MM/yyyy}" Width="*"/>
-                    <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=dd/MM/yyyy}" Width="*"/>
-                    <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*"/>
-                </DataGrid.Columns>
-            </DataGrid>
+  
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition Height="60"/>
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Status of Animal Records" FontSize="32" HorizontalAlignment="Center" FontWeight="Medium" FontFamily="Myriad Pro" Margin="15"/>
         </StackPanel>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right" Margin="10">
+            <Button Content="Add" Command="{Binding AddStatusAnimalCommand}" Style="{StaticResource button}" Width="75" Margin="5"/>
+            <Button Content="Edit" Command="{Binding EditStatusAnimalCommand}" Style="{StaticResource button}" Width="75" Margin="5"/>
+            <Button Content="Delete" Command="{Binding DeleteStatusAnimalCommand}" Style="{StaticResource button}" Width="75" Margin="5"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="2" ItemsSource="{Binding StatusAnimals}" SelectedItem="{Binding SelectedStatusAnimal}" Style="{DynamicResource DataGridStyle1}" CellStyle="{DynamicResource DataGridCellStyle1}" ColumnHeaderStyle="{DynamicResource DataGridColumnHeaderStyle1}" RowStyle="{DynamicResource DataGridRowStyle1}"
+              AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" CanUserResizeRows="False" CanUserSortColumns="False" CanUserResizeColumns="False" CanUserReorderColumns="False" Margin="10" IsReadOnly="True">
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Select" Width="80" CanUserResize="False">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <CheckBox IsChecked="{Binding IsSelected, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                       Margin="10 0 0 0" VerticalAlignment="Center"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="ID" Binding="{Binding AnimalStatusID}" Width="60"/>
+                <DataGridTextColumn Header="Tag No" Binding="{Binding TagNumber}" Width="*"/>
+                <DataGridTextColumn Header="Animal" Binding="{Binding AnimalName}" Width="*"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding StatusName}" Width="*"/>
+                <DataGridTextColumn Header="Start Date" Binding="{Binding StartDate, StringFormat=dd/MM/yyyy}" Width="*"/>
+                <DataGridTextColumn Header="End Date" Binding="{Binding EndDate, StringFormat=dd/MM/yyyy}" Width="*"/>
+                <DataGridTextColumn Header="Notes" Binding="{Binding Notes}" Width="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
     </Grid>
 </UserControl>

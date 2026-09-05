@@ -68,7 +68,7 @@ namespace BholaCattleApp.ViewModels
         public void NavigateToAddEditStatusAnimal(StatusAnimalRecordsViewModel parentVM, StatusAnimal editingAnimalStatus)
         {
             var addEditView = new AddEditStatusAnimalView();
-            addEditView.DataContext = new AddEditStatusAnimalViewModel(this, parentVM, editingAnimalStatus);
+            addEditView.DataContext = new AddEditStatusAnimalViewModel(this, parentVM, UserName, editingAnimalStatus);
             CurrentView = addEditView;
         }
         public void NavigateToStatusAnimalRecords()
